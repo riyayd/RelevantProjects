@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Governance Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; color: #222; line-height: 1.6; }
+    h1 { border-bottom: 3px solid #185FA5; padding-bottom: 10px; }
+    h2 { color: #185FA5; margin-top: 2rem; }
+    .meta { background: #f5f5f5; padding: 12px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 2rem; }
+    .risk-badge { display: inline-block; padding: 6px 18px; border-radius: 6px; font-weight: bold;
+                  font-size: 18px; color: white; background: #E24B4A; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 1rem 0; }
+    th { background: #185FA5; color: white; padding: 8px 12px; text-align: left; }
+    td { padding: 7px 12px; border-bottom: 1px solid #eee; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .flag { color: #E24B4A; font-weight: bold; }
+    .ok   { color: #1D9E75; }
+    .rec  { background: #EAF3DE; border-left: 4px solid #1D9E75; padding: 10px 14px;
+             border-radius: 4px; margin: 8px 0; font-size: 14px; }
+    img   { width: 100%; border-radius: 8px; margin: 1rem 0; }
+    footer { font-size: 12px; color: #999; text-align: center; margin-top: 3rem; }
+  </style>
+</head>
+<body>
+
+<h1>AI Model Governance Report</h1>
+<div class="meta">
+  <strong>Model:</strong> Random Forest Classifier &nbsp;|&nbsp;
+  <strong>Task:</strong> Customer churn prediction &nbsp;|&nbsp;
+  <strong>Date:</strong> 13 May 2026 &nbsp;|&nbsp;
+  <strong>Author:</strong> Riya Diwani
+</div>
+
+<h2>1. Executive summary</h2>
+<p>This report audits a Random Forest model trained to predict customer churn.
+The model achieves an AUC of <strong>0.7</strong> and an F1-score of <strong>0.476</strong>,
+indicating moderate performance.
+Fairness analysis across gender, age, and region reveals moderate disparities requiring attention.
+The overall governance risk rating is <span class="risk-badge">HIGH</span>.</p>
+
+<h2>2. Model performance</h2>
+<table>
+  <tr><th>Metric</th><th>Random Forest</th><th>Logistic Regression</th><th>Assessment</th></tr>
+  
+  <tr><td>ROC-AUC</td><td>0.7</td><td>0.743</td><td>Moderate</td></tr>
+  
+  <tr><td>Precision</td><td>0.651</td><td>0.6</td><td>Acceptable</td></tr>
+  
+  <tr><td>Recall</td><td>0.375</td><td>0.354</td><td>Review false negatives</td></tr>
+  
+  <tr><td>F1-score</td><td>0.476</td><td>0.445</td><td>Balanced metric</td></tr>
+  
+  <tr><td>Accuracy</td><td>0.702</td><td>0.682</td><td>Baseline check</td></tr>
+  
+</table>
+<img src="model_performance.png" alt="Model performance charts">
+
+<h2>3. Feature importance & explainability</h2>
+<p>The top three drivers of churn prediction are:</p>
+<ol>
+  
+  <li><strong>Monthly charges</strong> — importance score 0.217</li>
+  
+  <li><strong>Tenure (months)</strong> — importance score 0.206</li>
+  
+  <li><strong>Age</strong> — importance score 0.195</li>
+  
+</ol>
+<p><em>Governance note:</em> <strong>Age</strong> and <strong>Gender</strong> appear in the feature set.
+Under the EU AI Act and GDPR, using demographic attributes in automated financial decisions
+requires explicit justification and ongoing monitoring.</p>
+
+<h2>4. Fairness & bias findings</h2>
+<img src="fairness_audit.png" alt="Fairness audit charts">
+
+<h3>4a. Gender</h3>
+<table>
+  <tr><th>Group</th><th>N</th><th>Actual churn</th><th>Predicted churn</th><th>Recall</th><th>Precision</th></tr>
+  
+  <tr><td>Female</td><td>190</td>
+      <td>0.4</td><td>0.221</td>
+      <td>0.421</td><td>0.762</td></tr>
+  
+  <tr><td>Male</td><td>210</td>
+      <td>0.324</td><td>0.195</td>
+      <td>0.324</td><td>0.537</td></tr>
+  
+</table>
+<p>Demographic parity gap: <strong class="ok">
+0.026</strong> &nbsp;
+Equal opportunity gap: <strong class="flag">
+0.097</strong></p>
+
+<h3>4b. Age group</h3>
+<table>
+  <tr><th>Group</th><th>N</th><th>Actual churn</th><th>Predicted churn</th><th>Recall</th><th>Precision</th></tr>
+  
+  <tr><td>18-30</td><td>84</td>
+      <td>0.476</td><td>0.381</td>
+      <td>0.575</td><td>0.719</td></tr>
+  
+  <tr><td>31-45</td><td>107</td>
+      <td>0.327</td><td>0.196</td>
+      <td>0.314</td><td>0.524</td></tr>
+  
+  <tr><td>46-60</td><td>102</td>
+      <td>0.373</td><td>0.186</td>
+      <td>0.342</td><td>0.684</td></tr>
+  
+  <tr><td>61-75</td><td>107</td>
+      <td>0.29</td><td>0.103</td>
+      <td>0.226</td><td>0.636</td></tr>
+  
+</table>
+<p>Demographic parity gap: <strong class="flag">
+0.278</strong> &nbsp;
+Equal opportunity gap: <strong class="flag">
+0.349</strong></p>
+
+<h2>5. Risk rating</h2>
+<p><span class="risk-badge">HIGH</span> &nbsp; Significant fairness gaps detected across protected groups.</p>
+
+<h2>6. Recommendations</h2>
+
+<div class="rec">1. Remove or carefully justify the use of Gender as a feature — it introduces measurable bias and raises GDPR concerns for automated financial decisions.</div>
+
+<div class="rec">2. Investigate the age disparity: younger customers (18-30) show higher predicted churn rates. Consider whether this reflects genuine behaviour or model bias.</div>
+
+<div class="rec">3. Apply re-sampling or re-weighting techniques (e.g. class_weight=balanced) to improve recall for under-served groups.</div>
+
+<div class="rec">4. Implement ongoing post-deployment monitoring — recalculate fairness metrics monthly as customer demographics shift.</div>
+
+<div class="rec">5. Document this audit and store it with the model artefact to comply with EU AI Act transparency requirements for high-risk financial AI systems.</div>
+
+
+<footer>Generated by ML Bias Audit Tool &mdash; Riya Diwani &mdash; 13 May 2026</footer>
+</body>
+</html>
